@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const skills = {
+  Languages: ['Python', 'JavaScript', 'Java', 'C', 'SQL', 'LaTeX', 'HTML/CSS'],
+  'Libraries & Tools': [
+    'NumPy',
+    'SciPy',
+    'pandas',
+    'matplotlib',
+    'pytest',
+    'yfinance',
+    'Git',
+    'MongoDB',
+    'Node.js',
+    'Express',
+  ],
+  Concepts: [
+    'Monte Carlo simulation',
+    'stochastic calculus',
+    'options pricing (Black-Scholes, SSVI)',
+    'statistical testing',
+    'REST APIs',
+  ],
+};
+---
+
+<BaseLayout title="About — Henry Yu" description="About Henry Yu — education, focus areas and skills.">
+  <section class="about">
+    <h1>About</h1>
+    <div class="bio-placeholder">
+      <p>
+        [ABOUT — Henry will write this himself. Sections to cover:
+      </p>
+      <ul>
+        <li>Education: Stony Brook University, double major in Computer Science and Applied Mathematics &amp; Statistics</li>
+        <li>What he works on: quantitative finance research (derivatives pricing, vol surface modeling, backtesting), software engineering</li>
+        <li>What he is looking for: software engineering and quantitative roles</li>
+        <li>Keep it short and factual. No adjectives like "passionate" or "driven."</li>
+      </ul>
+      <p>]</p>
+    </div>
+
+    <h2>Skills &amp; Tools</h2>
+    <div class="skills">
+      {Object.entries(skills).map(([group, items]) => (
+        <div class="skill-group">
+          <h3>{group}</h3>
+          <ul class="skill-list">
+            {items.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .bio-placeholder {
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .bio-placeholder p {
+    margin: 0 0 0.5rem;
+  }
+
+  .bio-placeholder ul {
+    margin: 0 0 0.5rem;
+  }
+
+  .skills {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .skill-group h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .skill-list li {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    background-color: var(--color-code-bg);
+    color: var(--color-text);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+  }
+</style>

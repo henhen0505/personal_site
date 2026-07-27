@@ -1,0 +1,84 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  tags: string[];
+  href: string;
+  github?: string;
+}
+
+const { title, summary, tags, href, github } = Astro.props;
+---
+
+<article class="card">
+  <h2><a href={href}>{title}</a></h2>
+  <p class="summary">{summary}</p>
+  <ul class="tags">
+    {tags.map((tag) => <li>{tag}</li>)}
+  </ul>
+  <div class="card-links">
+    <a href={href}>Read more</a>
+    {github && (
+      <a href={github} target="_blank" rel="noopener noreferrer">GitHub</a>
+    )}
+  </div>
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-card-bg);
+    padding: 1.25rem;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+
+  .card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .card h2 a {
+    color: var(--color-text);
+  }
+
+  .card h2 a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .summary {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background-color: var(--color-code-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .card-links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+</style>

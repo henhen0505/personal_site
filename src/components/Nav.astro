@@ -1,0 +1,155 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const pathname = Astro.url.pathname;
+
+function isActive(path: string) {
+  if (path === '/') return pathname === '/';
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+---
+
+<header class="nav">
+  <div class="nav-inner container">
+    <a href="/" class="brand">Henry Yu</a>
+
+    <button
+      id="nav-toggle"
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+
+    <nav id="nav-menu" class="nav-menu" aria-label="Primary">
+      <a href="/about" class:list={[isActive('/about') && 'active']}>About</a>
+      <a href="/projects" class:list={[isActive('/projects') && 'active']}>Projects</a>
+      <a href="/resume" class:list={[isActive('/resume') && 'active']}>Resume</a>
+      <div class="nav-theme"><ThemeToggle /></div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 150ms;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+
+  .brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text);
+  }
+
+  .brand:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .nav-toggle-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-text);
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav-menu a {
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  .nav-menu a:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-menu a.active {
+    color: var(--color-accent);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .nav-theme {
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 767px) {
+    .nav-toggle {
+      display: flex;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      background-color: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem;
+      display: none;
+    }
+
+    .nav-menu.open {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .nav-toggle {
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById('nav-toggle');
+    var menu = document.getElementById('nav-menu');
+
+    btn.addEventListener('click', function () {
+      var isOpen = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  })();
+</script>

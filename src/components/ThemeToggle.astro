@@ -1,0 +1,49 @@
+---
+---
+
+<button id="theme-toggle" type="button" aria-label="Toggle dark and light mode">
+  <span id="theme-toggle-label">Theme</span>
+</button>
+
+<style>
+  button {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0.35rem 0.7rem;
+    transition: border-color 150ms, color 150ms;
+  }
+
+  button:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var button = document.getElementById('theme-toggle');
+    var label = document.getElementById('theme-toggle-label');
+
+    function currentTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function updateLabel() {
+      label.textContent = currentTheme() === 'dark' ? 'Light mode' : 'Dark mode';
+    }
+
+    updateLabel();
+
+    button.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateLabel();
+    });
+  })();
+</script>
