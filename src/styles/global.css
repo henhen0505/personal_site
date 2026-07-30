@@ -3,6 +3,7 @@
   --color-text: #1a1a1a;
   --color-text-muted: #555;
   --color-accent: #2563eb;
+  --color-accent-soft: rgba(37, 99, 235, 0.2);
   --color-border: #e5e5e5;
   --color-card-bg: #ffffff;
   --color-code-bg: #f3f4f6;
@@ -16,9 +17,15 @@
   --color-text: #e5e5e5;
   --color-text-muted: #999;
   --color-accent: #60a5fa;
+  --color-accent-soft: rgba(96, 165, 250, 0.25);
   --color-border: #2a2a2a;
   --color-card-bg: #1a1a1a;
   --color-code-bg: #1e1e1e;
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
 }
 
 *,
@@ -29,6 +36,23 @@
 
 html {
   color-scheme: light dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+section[id] + section[id] {
+  border-top: 1px solid var(--color-border);
+  padding-top: 2rem;
+  margin-top: 2rem;
 }
 
 body {

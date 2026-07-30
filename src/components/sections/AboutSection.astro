@@ -1,6 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-
 const skills = {
   Languages: ['Python', 'JavaScript', 'Java', 'C', 'SQL', 'LaTeX', 'HTML/CSS'],
   'Libraries & Tools': [
@@ -25,37 +23,43 @@ const skills = {
 };
 ---
 
-<BaseLayout title="About — Henry Yu" description="About Henry Yu — education, focus areas and skills.">
-  <section class="about">
-    <h1>About</h1>
-    <div class="bio-placeholder">
-      <p>
-        [ABOUT — Henry will write this himself. Sections to cover:
-      </p>
-      <ul>
-        <li>Education: Stony Brook University, double major in Computer Science and Applied Mathematics &amp; Statistics</li>
-        <li>What he works on: quantitative finance research (derivatives pricing, vol surface modeling, backtesting), software engineering</li>
-        <li>What he is looking for: software engineering and quantitative roles</li>
-        <li>Keep it short and factual. No adjectives like "passionate" or "driven."</li>
-      </ul>
-      <p>]</p>
-    </div>
+<section id="about" class="about">
+  <h2>About</h2>
+  <div class="bio-placeholder">
+    <p>
+      [ABOUT — Henry will write this himself. Sections to cover:
+    </p>
+    <ul>
+      <li>Education: Stony Brook University, double major in Computer Science and Applied Mathematics &amp; Statistics</li>
+      <li>What he works on: quantitative finance research (derivatives pricing, vol surface modeling, backtesting), software engineering</li>
+      <li>What he is looking for: software engineering and quantitative roles</li>
+      <li>Keep it short and factual. No adjectives like "passionate" or "driven."</li>
+    </ul>
+    <p>]</p>
+  </div>
 
-    <h2>Skills &amp; Tools</h2>
-    <div class="skills">
-      {Object.entries(skills).map(([group, items]) => (
-        <div class="skill-group">
-          <h3>{group}</h3>
-          <ul class="skill-list">
-            {items.map((item) => <li>{item}</li>)}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </section>
-</BaseLayout>
+  <h3>Skills &amp; Tools</h3>
+  <div class="skills">
+    {Object.entries(skills).map(([group, items]) => (
+      <div class="skill-group">
+        <h4>{group}</h4>
+        <ul class="skill-list">
+          {items.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
 
 <style>
+  .about h2 {
+    font-size: 2rem;
+  }
+
+  .about h3 {
+    font-size: 1.5rem;
+  }
+
   .bio-placeholder {
     border: 1px dashed var(--color-border);
     border-radius: 8px;
@@ -78,9 +82,10 @@ const skills = {
     gap: 1.5rem;
   }
 
-  .skill-group h3 {
+  .skill-group h4 {
     margin-top: 0;
     margin-bottom: 0.5rem;
+    font-size: 1.25rem;
   }
 
   .skill-list {

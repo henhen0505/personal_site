@@ -1,38 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeSection from '../components/sections/HomeSection.astro';
+import AboutSection from '../components/sections/AboutSection.astro';
+import ProjectsSection from '../components/sections/ProjectsSection.astro';
+import ResumeSection from '../components/sections/ResumeSection.astro';
 ---
 
-<BaseLayout title="Henry Yu" description="Henry Yu — software engineer and quantitative researcher.">
-  <section class="home">
-    <h1>Henry Yu</h1>
-    <p class="tagline">[TAGLINE — Henry will replace this]</p>
-    <p class="links">
-      <a href="https://www.linkedin.com/in/henryyu0505/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com/henhen0505" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="mailto:henry.yu@stonybrook.edu">Email</a>
-    </p>
-  </section>
+<BaseLayout
+  title="Henry Yu — Software Engineer & Quantitative Researcher"
+  description="Henry Yu's portfolio — about, projects, skills, and resume. Software engineer and quantitative researcher at Stony Brook University."
+>
+  <HomeSection />
+  <AboutSection />
+  <ProjectsSection />
+  <ResumeSection />
 </BaseLayout>
-
-<style>
-  .home {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
-  .home h1 {
-    margin-top: 0;
-  }
-
-  .tagline {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
-  .links {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-    font-size: 1rem;
-  }
-</style>

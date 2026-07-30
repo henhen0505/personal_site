@@ -1,19 +1,20 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Resume — Henry Yu" description="Download Henry Yu's resume.">
-  <section class="resume">
-    <h1>Resume</h1>
-    <a class="download" href="/resume.pdf" download>Download resume (PDF)</a>
-    <p class="note">Role-specific versions available on request.</p>
-  </section>
-</BaseLayout>
+<section id="resume" class="resume">
+  <h2>Resume</h2>
+  <a class="download" href="/resume.pdf" download>Download resume (PDF)</a>
+  <p class="note">Role-specific versions available on request.</p>
+</section>
 
 <style>
   .resume {
     padding-top: 1rem;
     padding-bottom: 2rem;
+  }
+
+  .resume h2 {
+    font-size: 2rem;
   }
 
   .download {

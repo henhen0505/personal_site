@@ -11,7 +11,7 @@ const { title, summary, tags, href, github } = Astro.props;
 ---
 
 <article class="card">
-  <h2><a href={href}>{title}</a></h2>
+  <h3><a href={href}>{title}</a></h3>
   <p class="summary">{summary}</p>
   <ul class="tags">
     {tags.map((tag) => <li>{tag}</li>)}
@@ -38,17 +38,17 @@ const { title, summary, tags, href, github } = Astro.props;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  .card h2 {
+  .card h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
   }
 
-  .card h2 a {
+  .card h3 a {
     color: var(--color-text);
   }
 
-  .card h2 a:hover {
+  .card h3 a:hover {
     color: var(--color-accent);
     text-decoration: none;
   }
