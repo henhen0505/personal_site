@@ -87,17 +87,6 @@ export const experience: Role[] = [
       'Avoided N+1 round trips with selectinload eager loading, added bulk inserts and polled the OpenAI Batch API on 24-hour windows.',
     ],
   },
-  {
-    company: 'Improvement Pill',
-    title: 'Data Analyst Intern',
-    period: 'May – August 2025',
-    location: 'New York, NY',
-    bullets: [
-      'Analyzed audience retention curves and click-through rates across 50+ videos in Python and Excel, identifying the content variables driving engagement and reporting findings weekly to the editorial team.',
-      'Reconciled monthly revenue across three income streams and investigated variances above 5% to support the financial close.',
-      'Built Excel forecasting models for monthly ad-tier and sponsorship revenue, then tracked forecast error against actuals.',
-    ],
-  },
 ];
 
 export const skills: { group: string; items: string[] }[] = [
