@@ -1,46 +1,69 @@
 ---
-const skills = {
-  Languages: ['Python', 'JavaScript', 'Java', 'C', 'SQL', 'LaTeX', 'HTML/CSS'],
-  'Libraries & Tools': [
-    'NumPy',
-    'SciPy',
-    'pandas',
-    'matplotlib',
-    'pytest',
-    'yfinance',
-    'Git',
-    'MongoDB',
-    'Node.js',
-    'Express',
-  ],
-  Concepts: [
-    'Monte Carlo simulation',
-    'stochastic calculus',
-    'options pricing (Black-Scholes, SSVI)',
-    'statistical testing',
-    'REST APIs',
-  ],
-};
+import { education, skills } from '../../data/profile';
 ---
 
 <section id="about" class="about">
   <h2>About</h2>
-  <div class="bio-placeholder">
+
+  <div class="bio">
     <p>
-      [ABOUT — Henry will write this himself. Sections to cover:
+      I study Computer Science and Applied Mathematics and Statistics at Stony Brook University.
+      The CS half focuses on algorithms and systems and the math half on probability and
+      optimization. I graduate in {education.graduation}.
     </p>
-    <ul>
-      <li>Education: Stony Brook University, double major in Computer Science and Applied Mathematics &amp; Statistics</li>
-      <li>What he works on: quantitative finance research (derivatives pricing, vol surface modeling, backtesting), software engineering</li>
-      <li>What he is looking for: software engineering and quantitative roles</li>
-      <li>Keep it short and factual. No adjectives like "passionate" or "driven."</li>
-    </ul>
-    <p>]</p>
+    <p>
+      Most of what I build sits between those two. I write backends that take in messy financial
+      data, validate it at the boundary and turn it into something you can actually test. Lately
+      that has meant an evaluation harness for LLM answers on SEC filings, an event-driven
+      pipeline for corporate events and a volatility surface fitter.
+    </p>
+    <p>
+      The part I care about is whether the numbers are right. Every project here carries a test
+      suite, and every write-up says what the project does not prove. On one of them the
+      interesting result was that a signal I had built pointed the wrong way, so I shelved it and
+      wrote that down too. I would rather hand you a system with a documented hole in it than a
+      claim I can't defend.
+    </p>
+    <p>
+      I've also done ordinary web work: a full-stack app with JWT auth and a swappable database
+      layer, and this site. I'm looking for a Summer 2027 internship or a new-grad role starting
+      after I graduate. Email is the fastest way to reach me.
+    </p>
   </div>
 
-  <h3>Skills &amp; Tools</h3>
+  <h3>Education</h3>
+  <div class="edu">
+    <p class="edu-head">
+      <strong>{education.school}</strong>
+      <span class="edu-meta">{education.location} &middot; {education.graduation}</span>
+    </p>
+    <ul class="edu-degrees">
+      {education.degrees.map((degree) => <li>{degree}</li>)}
+    </ul>
+    <p class="edu-honors">{education.honors}</p>
+
+    <details class="courses">
+      <summary>Selected coursework</summary>
+      <div class="course-cols">
+        <div>
+          <h4>Completed</h4>
+          <ul>
+            {education.coursework.map((course) => <li>{course}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h4>Fall 2026</h4>
+          <ul>
+            {education.inProgress.map((course) => <li>{course}</li>)}
+          </ul>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <h3>Skills</h3>
   <div class="skills">
-    {Object.entries(skills).map(([group, items]) => (
+    {skills.map(({ group, items }) => (
       <div class="skill-group">
         <h4>{group}</h4>
         <ul class="skill-list">
@@ -57,52 +80,125 @@ const skills = {
   }
 
   .about h3 {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
+    margin-top: 2.5rem;
   }
 
-  .bio-placeholder {
-    border: 1px dashed var(--color-border);
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
+  .bio p {
+    max-width: 68ch;
+  }
+
+  .edu {
+    border-left: 2px solid var(--color-border);
+    padding-left: 1.25rem;
+  }
+
+  .edu-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-meta {
     color: var(--color-text-muted);
-    font-style: italic;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
   }
 
-  .bio-placeholder p {
-    margin: 0 0 0.5rem;
+  .edu-degrees {
+    margin: 0 0 0.75rem;
+    padding-left: 1.2em;
   }
 
-  .bio-placeholder ul {
-    margin: 0 0 0.5rem;
+  .edu-degrees li {
+    color: var(--color-text-muted);
+  }
+
+  .edu-honors {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  .courses {
+    margin-top: 1rem;
+  }
+
+  .courses summary {
+    cursor: pointer;
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    width: fit-content;
+  }
+
+  .courses summary:hover {
+    text-decoration: underline;
+  }
+
+  .course-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 2rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 560px) {
+    .course-cols {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .course-cols h4 {
+    margin: 0 0 0.4rem;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+
+  .course-cols ul {
+    margin: 0;
+    padding-left: 1.1em;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
   }
 
   .skills {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .skill-group h4 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
   }
 
   .skill-list {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
     padding: 0;
     margin: 0;
   }
 
   .skill-list li {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     background-color: var(--color-code-bg);
+    border: 1px solid transparent;
     color: var(--color-text);
-    padding: 0.3rem 0.6rem;
+    padding: 0.25rem 0.55rem;
     border-radius: 4px;
   }
 </style>

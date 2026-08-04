@@ -1,0 +1,366 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '../data/profile';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+interface Item {
+  label: string;
+  kind: string;
+  keywords: string;
+  /** Omitted for rows that run an action instead of navigating. */
+  href?: string;
+  external?: boolean;
+  action?: string;
+}
+
+const items: Item[] = [
+  { label: 'About', kind: 'Section', href: '/#about', keywords: 'bio education coursework skills stony brook' },
+  { label: 'Experience', kind: 'Section', href: '/#experience', keywords: 'work internship jobs bettertherapy rewild teaching assistant' },
+  { label: 'Projects', kind: 'Section', href: '/#projects', keywords: 'portfolio work code' },
+  { label: 'Resume', kind: 'Section', href: '/#resume', keywords: 'cv download pdf' },
+
+  ...projects.map((project) => ({
+    label: project.data.title,
+    kind: 'Project',
+    href: `/projects/${project.id}`,
+    keywords: [...project.data.tags, ...project.data.domains].join(' ').toLowerCase(),
+  })),
+
+  { label: 'Download resume (PDF)', kind: 'Action', href: site.resume, keywords: 'cv pdf download' },
+  { label: 'Toggle light and dark theme', kind: 'Action', keywords: 'dark light mode appearance', action: 'theme' },
+
+  { label: 'Email', kind: 'Contact', href: `mailto:${site.email}`, keywords: `contact reach out ${site.email}`, external: true },
+  { label: 'LinkedIn', kind: 'Contact', href: site.linkedin, keywords: 'contact profile social', external: true },
+  { label: 'GitHub', kind: 'Contact', href: site.github, keywords: 'code repos source', external: true },
+];
+---
+
+<div id="palette" class="palette" hidden>
+  <div class="backdrop" data-palette-close></div>
+
+  <div class="dialog" role="dialog" aria-modal="true" aria-label="Jump to">
+    <input
+      id="palette-input"
+      class="palette-input"
+      type="text"
+      role="combobox"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="Jump to a section, project or link…"
+      aria-autocomplete="list"
+      aria-expanded="true"
+      aria-controls="palette-list"
+      aria-label="Search sections, projects and links"
+    />
+
+    <ul id="palette-list" class="palette-list" role="listbox" aria-label="Results">
+      {items.map((item, index) => (
+        <li
+          id={`palette-item-${index}`}
+          class="palette-item"
+          role="option"
+          aria-selected="false"
+          data-href={item.href ?? ''}
+          data-external={item.external ? 'true' : 'false'}
+          data-action={item.action ?? ''}
+          data-haystack={`${item.label} ${item.kind} ${item.keywords}`.toLowerCase()}
+        >
+          <span class="item-label">{item.label}</span>
+          <span class="item-kind">{item.kind}</span>
+        </li>
+      ))}
+    </ul>
+
+    <p id="palette-empty" class="palette-empty" hidden>No matches.</p>
+
+    <div class="palette-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .palette[hidden] {
+    display: none;
+  }
+
+  .palette {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .dialog {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    margin-top: 8vh;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background-color: var(--color-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .palette-input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    background-color: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+  }
+
+  .palette-input:focus {
+    outline: none;
+  }
+
+  .palette-list {
+    list-style: none;
+    max-height: min(50vh, 320px);
+    overflow-y: auto;
+    margin: 0;
+    padding: 0.35rem;
+  }
+
+  .palette-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .palette-item[hidden] {
+    display: none;
+  }
+
+  .palette-item.is-active {
+    background-color: var(--color-accent-soft);
+  }
+
+  .item-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .item-kind {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .palette-empty {
+    margin: 0;
+    padding: 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .palette-foot {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0.9rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+  }
+
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    background-color: var(--color-code-bg);
+    padding: 0.05rem 0.28rem;
+    margin-right: 0.2rem;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var palette = document.getElementById('palette');
+    var input = document.getElementById('palette-input');
+    var list = document.getElementById('palette-list');
+    var emptyNote = document.getElementById('palette-empty');
+    if (!palette || !input || !list) return;
+
+    var items = Array.prototype.slice.call(list.querySelectorAll('.palette-item'));
+    var visible = items.slice();
+    var activeIndex = 0;
+    var lastFocused = null;
+
+    function setActive(index) {
+      if (!visible.length) {
+        activeIndex = -1;
+        input.removeAttribute('aria-activedescendant');
+        return;
+      }
+      activeIndex = Math.max(0, Math.min(index, visible.length - 1));
+      items.forEach(function (item) {
+        item.classList.remove('is-active');
+        item.setAttribute('aria-selected', 'false');
+      });
+      var active = visible[activeIndex];
+      active.classList.add('is-active');
+      active.setAttribute('aria-selected', 'true');
+      input.setAttribute('aria-activedescendant', active.id);
+      // Keep the highlighted row inside the scroll box.
+      var box = list.getBoundingClientRect();
+      var row = active.getBoundingClientRect();
+      if (row.bottom > box.bottom) list.scrollTop += row.bottom - box.bottom;
+      if (row.top < box.top) list.scrollTop -= box.top - row.top;
+    }
+
+    function filter(query) {
+      var tokens = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
+      visible = items.filter(function (item) {
+        var haystack = item.getAttribute('data-haystack') || '';
+        // Every token must appear, so "vo surf" narrows rather than widens.
+        var match = tokens.every(function (token) {
+          return haystack.indexOf(token) !== -1;
+        });
+        item.hidden = !match;
+        return match;
+      });
+
+      if (emptyNote) emptyNote.hidden = visible.length !== 0;
+      list.hidden = visible.length === 0;
+      input.setAttribute('aria-expanded', visible.length ? 'true' : 'false');
+      setActive(0);
+    }
+
+    function open() {
+      if (!palette.hidden) return;
+      lastFocused = document.activeElement;
+      palette.hidden = false;
+      document.body.style.overflow = 'hidden';
+      input.value = '';
+      filter('');
+      input.focus();
+    }
+
+    function close() {
+      if (palette.hidden) return;
+      palette.hidden = true;
+      document.body.style.overflow = '';
+      // Return focus where the visitor left it.
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      lastFocused = null;
+    }
+
+    function activate(item) {
+      if (!item) return;
+      var action = item.getAttribute('data-action');
+
+      if (action === 'theme') {
+        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('theme', next);
+        } catch (err) {
+          /* private mode: the toggle still works for this page view */
+        }
+        var toggleLabel = document.getElementById('theme-toggle-label');
+        if (toggleLabel) toggleLabel.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+        close();
+        return;
+      }
+
+      var href = item.getAttribute('data-href');
+      if (!href) return;
+      var external = item.getAttribute('data-external') === 'true';
+      close();
+
+      if (external) {
+        window.open(href, '_blank', 'noopener');
+      } else {
+        window.location.href = href;
+      }
+    }
+
+    document.addEventListener('keydown', function (event) {
+      var isToggle = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
+
+      if (isToggle) {
+        event.preventDefault();
+        palette.hidden ? open() : close();
+        return;
+      }
+
+      if (palette.hidden) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setActive(activeIndex + 1);
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setActive(activeIndex - 1);
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        setActive(0);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        setActive(visible.length - 1);
+      } else if (event.key === 'Enter') {
+        event.preventDefault();
+        activate(visible[activeIndex]);
+      } else if (event.key === 'Tab') {
+        // Only the input is focusable in here, so keep focus from escaping.
+        event.preventDefault();
+        input.focus();
+      }
+    });
+
+    input.addEventListener('input', function () {
+      filter(input.value);
+    });
+
+    list.addEventListener('click', function (event) {
+      var item = event.target.closest ? event.target.closest('.palette-item') : null;
+      activate(item);
+    });
+
+    list.addEventListener('mousemove', function (event) {
+      var item = event.target.closest ? event.target.closest('.palette-item') : null;
+      if (!item) return;
+      var index = visible.indexOf(item);
+      if (index !== -1 && index !== activeIndex) setActive(index);
+    });
+
+    palette.addEventListener('click', function (event) {
+      if (event.target.hasAttribute('data-palette-close')) close();
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll('[data-palette-open]')).forEach(function (trigger) {
+      trigger.addEventListener('click', open);
+    });
+  })();
+</script>

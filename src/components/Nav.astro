@@ -1,5 +1,12 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+
+const links = [
+  { href: '/#about', section: 'about', label: 'About' },
+  { href: '/#experience', section: 'experience', label: 'Experience' },
+  { href: '/#projects', section: 'projects', label: 'Projects' },
+  { href: '/#resume', section: 'resume', label: 'Resume' },
+];
 ---
 
 <header class="nav">
@@ -20,10 +27,21 @@ import ThemeToggle from './ThemeToggle.astro';
     </button>
 
     <nav id="nav-menu" class="nav-menu" aria-label="Primary">
-      <a href="/#about" data-section="about">About</a>
-      <a href="/#projects" data-section="projects">Projects</a>
-      <a href="/#resume" data-section="resume">Resume</a>
-      <div class="nav-theme"><ThemeToggle /></div>
+      {links.map((link) => (
+        <a href={link.href} data-section={link.section}>{link.label}</a>
+      ))}
+
+      <div class="nav-tools">
+        <button
+          type="button"
+          class="palette-trigger"
+          data-palette-open
+          aria-label="Open the jump-to search"
+        >
+          <span data-mod-key>Ctrl</span><span class="key-plus">K</span>
+        </button>
+        <ThemeToggle />
+      </div>
     </nav>
   </div>
 </header>
@@ -42,14 +60,16 @@ import ThemeToggle from './ThemeToggle.astro';
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
+    gap: 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
   }
 
   .brand {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--color-text);
+    white-space: nowrap;
   }
 
   .brand:hover {
@@ -80,31 +100,66 @@ import ThemeToggle from './ThemeToggle.astro';
   .nav-menu {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.05rem;
   }
 
-  .nav-menu a {
+  .nav-menu > a {
     color: var(--color-text);
-    font-size: 0.95rem;
+    font-size: 0.88rem;
+    white-space: nowrap;
   }
 
-  .nav-menu a:hover {
+  .nav-menu > a:hover {
     color: var(--color-accent);
   }
 
-  .nav-menu a.active {
+  .nav-menu > a.active {
     color: var(--color-accent);
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 
-  .nav-theme {
+  .nav-tools {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
   }
 
-  @media (max-width: 767px) {
+  .palette-trigger {
+    display: none;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-code-bg);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.32rem 0.45rem;
+    cursor: pointer;
+    transition: border-color 150ms, color 150ms;
+  }
+
+  .palette-trigger:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .key-plus {
+    margin-left: 0.22em;
+  }
+
+  /* Only offer the shortcut button where there is a keyboard behind it. */
+  :global(html.js) .palette-trigger {
+    display: inline-block;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    :global(html.js) .palette-trigger {
+      display: none;
+    }
+  }
+
+  @media (max-width: 819px) {
     .nav-toggle {
       display: flex;
     }
@@ -128,7 +183,7 @@ import ThemeToggle from './ThemeToggle.astro';
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 820px) {
     .nav-toggle {
       display: none;
     }
@@ -139,14 +194,14 @@ import ThemeToggle from './ThemeToggle.astro';
   (function () {
     var btn = document.getElementById('nav-toggle');
     var menu = document.getElementById('nav-menu');
+    if (!btn || !menu) return;
 
     btn.addEventListener('click', function () {
       var isOpen = menu.classList.toggle('open');
       btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 
-    var menuLinks = menu.querySelectorAll('a');
-    menuLinks.forEach(function (link) {
+    menu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         if (menu.classList.contains('open')) {
           menu.classList.remove('open');
@@ -161,18 +216,10 @@ import ThemeToggle from './ThemeToggle.astro';
   document.addEventListener('DOMContentLoaded', function () {
     var navLinks = document.querySelectorAll('.nav-menu a[data-section]');
 
-    function clearActive() {
-      navLinks.forEach(function (link) {
-        link.classList.remove('active');
-      });
-    }
-
     function setActive(sectionId) {
-      clearActive();
-      var match = document.querySelector('.nav-menu a[data-section="' + sectionId + '"]');
-      if (match) {
-        match.classList.add('active');
-      }
+      navLinks.forEach(function (link) {
+        link.classList.toggle('active', link.getAttribute('data-section') === sectionId);
+      });
     }
 
     if (location.pathname !== '/' && location.pathname !== '/index.html') {

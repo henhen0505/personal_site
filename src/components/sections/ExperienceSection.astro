@@ -1,0 +1,141 @@
+---
+import { experience } from '../../data/profile';
+---
+
+<section id="experience" class="experience">
+  <h2>Experience</h2>
+
+  <ol class="timeline">
+    {experience.map((role) => (
+      <li class="entry">
+        <div class="marker" aria-hidden="true"></div>
+        <div class="entry-body">
+          <div class="entry-head">
+            <h3>
+              {role.company}
+              {role.upcoming && <span class="badge">Incoming</span>}
+            </h3>
+            <span class="period">{role.period}</span>
+          </div>
+          <p class="role-title">
+            {role.title} <span class="sep" aria-hidden="true">&middot;</span>
+            <span class="loc">{role.location}</span>
+          </p>
+          <ul class="bullets">
+            {role.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .experience h2 {
+    font-size: 2rem;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1rem 1fr;
+    gap: 0.75rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Connector line between markers, stopping at the last entry. */
+  .entry:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1.5rem;
+    bottom: 0.25rem;
+    width: 1px;
+    background-color: var(--color-border);
+  }
+
+  .entry:last-child {
+    padding-bottom: 0;
+  }
+
+  .marker {
+    width: 11px;
+    height: 11px;
+    margin-top: 0.5rem;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    background-color: var(--color-bg);
+  }
+
+  .entry-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .entry h3 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 4px;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    vertical-align: 0.12em;
+  }
+
+  .period {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .role-title {
+    margin: 0.15rem 0 0.6rem;
+    font-size: 0.95rem;
+    color: var(--color-text);
+  }
+
+  .sep,
+  .loc {
+    color: var(--color-text-muted);
+  }
+
+  /* The template collapses the whitespace after the separator span. */
+  .loc {
+    margin-left: 0.3rem;
+  }
+
+  .bullets {
+    margin: 0;
+    padding-left: 1.15em;
+    color: var(--color-text-muted);
+  }
+
+  .bullets li {
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .bullets li:last-child {
+    margin-bottom: 0;
+  }
+</style>

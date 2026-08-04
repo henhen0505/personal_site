@@ -1,18 +1,56 @@
 ---
 import { getCollection } from 'astro:content';
 import ProjectCard from '../ProjectCard.astro';
+import { slug } from '../../lib/slug';
 
-const projects = await getCollection('projects');
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+const DOMAIN_ORDER = ['Web', 'Backend', 'AI/LLM', 'Data', 'Quant'] as const;
+
+// Only offer a filter for domains that actually have projects behind them, so
+// no chip can ever return an empty grid.
+const domains = DOMAIN_ORDER.map((label) => ({
+  label,
+  value: slug(label),
+  count: projects.filter((project) => project.data.domains.includes(label)).length,
+})).filter((domain) => domain.count > 0);
 ---
 
 <section id="projects" class="projects">
-  <h2>Projects</h2>
-  <div class="grid">
+  <div class="projects-head">
+    <h2>Projects</h2>
+    <p class="lead">
+      Six projects across web, backend, statistics and quantitative work. Each write-up includes
+      what the project does not prove.
+    </p>
+  </div>
+
+  <!--
+    Rendered hidden and revealed by script. Without JavaScript every project shows
+    and there is no row of buttons that do nothing.
+  -->
+  <div id="filter-bar" class="filter-bar" role="group" aria-label="Filter projects by domain" hidden>
+    <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+      All <span class="count">{projects.length}</span>
+    </button>
+    {domains.map((domain) => (
+      <button type="button" class="chip" data-filter={domain.value} aria-pressed="false">
+        {domain.label} <span class="count">{domain.count}</span>
+      </button>
+    ))}
+  </div>
+
+  <p id="filter-status" class="filter-status" role="status" aria-live="polite"></p>
+
+  <div id="project-grid" class="grid">
     {projects.map((project) => (
       <ProjectCard
         title={project.data.title}
         summary={project.data.summary}
         tags={project.data.tags}
+        domains={project.data.domains}
+        period={project.data.period}
+        status={project.data.status}
         href={`/projects/${project.id}`}
         github={project.data.github}
       />
@@ -23,12 +61,131 @@ const projects = await getCollection('projects');
 <style>
   .projects h2 {
     font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .lead {
+    max-width: 62ch;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: border-color 150ms, color 150ms, background-color 150ms;
+  }
+
+  .chip:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .chip:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .chip.is-active {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent-soft);
+    color: var(--color-text);
+  }
+
+  .count {
+    font-size: 0.7rem;
+    opacity: 0.65;
+  }
+
+  .filter-status {
+    min-height: 1.2em;
+    margin: 0 0 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
   }
+
 </style>
+
+<script is:inline>
+  (function () {
+    var bar = document.getElementById('filter-bar');
+    var grid = document.getElementById('project-grid');
+    var statusLine = document.getElementById('filter-status');
+    if (!bar || !grid) return;
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+    var chips = Array.prototype.slice.call(bar.querySelectorAll('.chip'));
+    var valid = chips.map(function (chip) {
+      return chip.getAttribute('data-filter');
+    });
+
+    function apply(filter, updateUrl) {
+      var shown = 0;
+
+      cards.forEach(function (card) {
+        var domains = (card.getAttribute('data-domains') || '').split(' ');
+        var match = filter === 'all' || domains.indexOf(filter) !== -1;
+        card.hidden = !match;
+        if (match) shown++;
+      });
+
+      chips.forEach(function (chip) {
+        var active = chip.getAttribute('data-filter') === filter;
+        chip.classList.toggle('is-active', active);
+        chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      if (statusLine) {
+        statusLine.textContent =
+          filter === 'all'
+            ? 'Showing all ' + shown + ' projects.'
+            : 'Showing ' + shown + (shown === 1 ? ' project' : ' projects') + ' in this area.';
+      }
+
+      if (updateUrl) {
+        var url = new URL(window.location.href);
+        if (filter === 'all') {
+          url.searchParams.delete('area');
+        } else {
+          url.searchParams.set('area', filter);
+        }
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+      }
+    }
+
+    bar.addEventListener('click', function (event) {
+      var chip = event.target.closest ? event.target.closest('.chip') : null;
+      if (!chip) return;
+      apply(chip.getAttribute('data-filter'), true);
+    });
+
+    // A filtered view is a shareable link, so honour ?area= on load.
+    var requested = new URL(window.location.href).searchParams.get('area');
+    var initial = requested && valid.indexOf(requested) !== -1 ? requested : 'all';
+
+    bar.hidden = false;
+    apply(initial, false);
+  })();
+</script>

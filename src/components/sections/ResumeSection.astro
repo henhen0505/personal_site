@@ -1,40 +1,96 @@
 ---
+import { site, education } from '../../data/profile';
 ---
 
 <section id="resume" class="resume">
   <h2>Resume</h2>
-  <a class="download" href="/resume.pdf" download>Download resume (PDF)</a>
-  <p class="note">Role-specific versions available on request.</p>
+
+  <div class="resume-row">
+    <div>
+      <p class="summary">
+        One page, kept current. CS and Applied Math double major at {education.school}, graduating
+        {education.graduation}. Role-specific versions available on request.
+      </p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href={site.resume} download>Download PDF</a>
+        <a class="btn" href={site.resume} target="_blank" rel="noopener noreferrer">Open in browser</a>
+      </div>
+    </div>
+
+    <ul class="contact">
+      <li><span class="key">Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li>
+        <span class="key">LinkedIn</span>
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer">henryyu0505</a>
+      </li>
+      <li>
+        <span class="key">GitHub</span>
+        <a href={site.github} target="_blank" rel="noopener noreferrer">henhen0505</a>
+      </li>
+      <li><span class="key">Location</span><span>{site.location}</span></li>
+    </ul>
+  </div>
 </section>
 
 <style>
   .resume {
-    padding-top: 1rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
   }
 
   .resume h2 {
     font-size: 2rem;
   }
 
-  .download {
-    display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.6rem 1.25rem;
-    border: 1px solid var(--color-accent);
-    border-radius: 6px;
-    color: var(--color-accent);
-    font-weight: 700;
+  .resume-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .download:hover {
-    background-color: var(--color-accent);
-    color: var(--color-bg);
-    text-decoration: none;
+  @media (min-width: 620px) {
+    .resume-row {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2rem;
+    }
   }
 
-  .note {
-    margin-top: 1.5rem;
+  .summary {
+    max-width: 46ch;
     color: var(--color-text-muted);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+
+  .contact li {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contact li:last-child {
+    border-bottom: none;
+  }
+
+  .key {
+    flex: 0 0 5.5rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-top: 0.2rem;
   }
 </style>
