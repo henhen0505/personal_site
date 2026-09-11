@@ -61,20 +61,20 @@ export const experience: Role[] = [
   {
     company: 'ReWild Long Island',
     title: 'Software Engineer, Dev Team',
-    period: 'Fall 2026 – Summer 2027',
+    period: 'August 2026 – Present',
     location: 'Long Island, NY',
-    upcoming: true,
     bullets: [
-      'Joining the dev team to build an AI-assisted web platform and chatbot for native-landcare education.',
+      'Architected and containerized a full-stack backend (FastAPI, PostgreSQL 16, pgvector) with Docker Compose and Alembic migrations; designed an 11-table schema with composite keys, custom enums, and a many-to-many crosswalk for 100+ Long Island communities.',
     ],
   },
   {
     company: 'Stony Brook University',
     title: 'Undergraduate Teaching Assistant',
-    period: 'Fall 2026',
+    period: 'August 2026 – Present',
     location: 'Stony Brook, NY',
-    upcoming: true,
-    bullets: ['CSE 260: Honors Data Structures and Programming Abstractions.'],
+    bullets: [
+      'CSE 260: Honors Data Structures and Programming Abstractions. Run lab sections for ~80 students, guiding implementation and analysis of data structures and programming abstractions.',
+    ],
   },
   {
     company: 'BetterTherapy',
@@ -82,7 +82,7 @@ export const experience: Role[] = [
     period: 'May – August 2025',
     location: 'New York, NY',
     bullets: [
-      'Designed a SQLAlchemy data layer over SQLite for an automated LLM evaluation pipeline: schema with a reusable timestamp mixin, cascading request/response relationships and a session decorator managing session lifecycle.',
+      'Designed a SQLAlchemy data layer over SQLite for an automated LLM evaluation pipeline: schema with a reusable timestamp mixin, cascading request/response relationships and a session decorator.',
       'Wrote atomic upserts (ON CONFLICT DO UPDATE) for a node blacklist, incrementing violation counts on the SQL side so concurrent writes stay correct.',
       'Avoided N+1 round trips with selectinload eager loading, added bulk inserts and polled the OpenAI Batch API on 24-hour windows.',
     ],
@@ -96,11 +96,11 @@ export const skills: { group: string; items: string[] }[] = [
   },
   {
     group: 'Web',
-    items: ['React', 'Node.js', 'Express', 'Astro', 'REST APIs', 'JWT auth'],
+    items: ['React', 'Node.js', 'Express', 'FastAPI', 'Astro', 'REST APIs', 'JWT auth'],
   },
   {
     group: 'Data & storage',
-    items: ['PostgreSQL', 'MongoDB', 'SQLite', 'SQLAlchemy', 'Sequelize', 'Mongoose'],
+    items: ['PostgreSQL', 'MySQL', 'MongoDB', 'SQLite', 'SQLAlchemy', 'Sequelize', 'Mongoose'],
   },
   {
     group: 'Libraries',
@@ -112,7 +112,7 @@ export const skills: { group: string; items: string[] }[] = [
   },
   {
     group: 'Testing & tooling',
-    items: ['pytest', 'Vitest', 'Git', 'Linux', 'Vercel', 'LaTeX', 'Excel'],
+    items: ['pytest', 'Vitest', 'GoogleTest', 'Git', 'Linux', 'Docker', 'AWS', 'Vercel', 'LaTeX'],
   },
   {
     group: 'Concepts',
@@ -120,6 +120,7 @@ export const skills: { group: string; items: string[] }[] = [
       'Data structures & algorithms',
       'System design',
       'API design',
+      'Full-stack web development',
       'Event-driven architecture',
       'Probability & statistics',
       'Regression modeling',
