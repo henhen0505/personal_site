@@ -7,7 +7,7 @@ export const site = {
   name: 'Henry Yu',
   tagline: 'I build and test backend systems for financial data and LLM pipelines.',
   location: 'New York, NY',
-  email: 'henry.yu@stonybrook.edu',
+  email: 'henryyu0505@gmail.com',
   linkedin: 'https://www.linkedin.com/in/henryyu0505/',
   github: 'https://github.com/henhen0505',
   resume: '/resume.pdf',
@@ -34,6 +34,7 @@ export const education = {
     'Data Analysis',
     'Data Mining',
     'Quantitative Finance',
+    'Machine Learning',
     'Applied Linear Algebra',
     'Operations Research I',
     'Applied Algebra',
@@ -92,11 +93,11 @@ export const experience: Role[] = [
 export const skills: { group: string; items: string[] }[] = [
   {
     group: 'Languages',
-    items: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'R', 'Java', 'C', 'C++', 'Bash', 'HTML/CSS'],
+    items: ['Python', 'JavaScript', 'TypeScript', 'Go', 'SQL', 'R', 'Java', 'C', 'C++', 'Bash', 'HTML/CSS'],
   },
   {
     group: 'Web',
-    items: ['React', 'Node.js', 'Express', 'FastAPI', 'Astro', 'REST APIs', 'JWT auth'],
+    items: ['React', 'Node.js', 'Express', 'Django', 'FastAPI', 'Astro', 'REST APIs', 'JWT auth'],
   },
   {
     group: 'Data & storage',
@@ -104,7 +105,7 @@ export const skills: { group: string; items: string[] }[] = [
   },
   {
     group: 'Libraries',
-    items: ['pandas', 'NumPy', 'SciPy', 'statsmodels', 'matplotlib', 'Pydantic'],
+    items: ['pandas', 'NumPy', 'SciPy', 'statsmodels', 'matplotlib', 'Pydantic', 'PyTorch/TensorFlow'],
   },
   {
     group: 'AI & LLM',
@@ -112,7 +113,7 @@ export const skills: { group: string; items: string[] }[] = [
   },
   {
     group: 'Testing & tooling',
-    items: ['pytest', 'Vitest', 'GoogleTest', 'Git', 'Linux', 'Docker', 'AWS', 'Vercel', 'LaTeX'],
+    items: ['pytest', 'Vitest', 'GoogleTest', 'Git', 'Linux', 'eBPF', 'Docker', 'Kubernetes', 'AWS', 'Vercel', 'CI/CD', 'LaTeX'],
   },
   {
     group: 'Concepts',
@@ -122,6 +123,7 @@ export const skills: { group: string; items: string[] }[] = [
       'API design',
       'Full-stack web development',
       'Event-driven architecture',
+      'Concurrency',
       'Probability & statistics',
       'Regression modeling',
       'Options pricing (Black-Scholes, SSVI)',

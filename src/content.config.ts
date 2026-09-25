@@ -14,7 +14,7 @@ const projects = defineCollection({
     period: z.string(),
     // Drives the filter bar on the projects grid. Keep the vocabulary small and
     // reuse existing values, since every new value adds a button.
-    domains: z.array(z.enum(['Web', 'Backend', 'AI/LLM', 'Data', 'Quant'])).nonempty(),
+    domains: z.array(z.enum(['Web', 'Backend', 'Systems', 'AI/LLM', 'Data', 'Quant'])).nonempty(),
     // Lower sorts first. Controls the order of the projects grid.
     order: z.number(),
   }),

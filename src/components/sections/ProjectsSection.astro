@@ -5,7 +5,7 @@ import { slug } from '../../lib/slug';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 
-const DOMAIN_ORDER = ['Web', 'Backend', 'AI/LLM', 'Data', 'Quant'] as const;
+const DOMAIN_ORDER = ['Web', 'Backend', 'Systems', 'AI/LLM', 'Data', 'Quant'] as const;
 
 // Only offer a filter for domains that actually have projects behind them, so
 // no chip can ever return an empty grid.
