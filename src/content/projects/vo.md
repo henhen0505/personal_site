@@ -1,6 +1,6 @@
 ---
 title: "VO — Vol Surface Mispricing Detector"
-summary: "Research pipeline that fits an SSVI implied-volatility surface and flags deviations at low-OI strikes. It has produced zero candidates so far, and the write-up says so."
+summary: "Research pipeline that fits an SSVI implied-volatility surface and flags deviations at low-OI strikes. It has produced zero candidates so far, and the write up says so."
 tags: ["Python", "SciPy", "NumPy", "SSVI", "Options"]
 status: "Phase 1 complete"
 period: "May 2026"

@@ -8,7 +8,7 @@ Live at https://personal-site-xi-kohl.vercel.app
 
 - Astro 7 (static output), deployed on Vercel from `main`
 - Vanilla CSS with custom properties, no UI framework
-- Content collections for project write-ups (`src/content/projects/`), Zod-typed frontmatter
+- Content collections for project write ups (`src/content/projects/`), Zod-typed frontmatter
 - No runtime dependencies, no backend, no database, no CMS, no analytics
 
 ## Interactive parts

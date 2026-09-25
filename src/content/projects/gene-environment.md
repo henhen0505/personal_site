@@ -18,7 +18,7 @@ selection then identified a significant epistatic interaction (t = 7.50, p = 1.2
 contributing **2.6%** additional variance on top of the main-effect model.
 
 The 2.6% is the honest number to report. The interaction is unambiguously there by the p-value
-and it is also a small share of what the model explains. Both facts belong in the write-up.
+and it is also a small share of what the model explains. Both facts belong in the write up.
 
 ## Part two: missing data
 
